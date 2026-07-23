@@ -24,6 +24,100 @@ const STICKERS = [
 
 const MAX_SONGS = 8;
 
+// ═══════════════════════════════════════════════
+// SHARE LINK — encode/decode mixtape state in the URL
+// ═══════════════════════════════════════════════
+// No hay backend: el link "es" la data. Guardamos color,
+// stickers, nota y qué canciones de SONG_LIBRARY eligió
+// dentro del hash de la URL (#m=...). Al abrir un link con
+// ese hash, la página se salta la creación y muestra
+// directo el mixtape ya armado.
+function encodeState() {
+  const payload = {
+    c:  state.cassetteColor,
+    a:  state.cassetteAccent,
+    st: state.selectedStickers,
+    n:  state.note,
+    sg: state.songs.map(s => s.libraryIdx).filter(i => i !== undefined && i !== null)
+  };
+  return btoa(encodeURIComponent(JSON.stringify(payload)));
+}
+
+function decodeState(encoded) {
+  try {
+    return JSON.parse(decodeURIComponent(atob(encoded)));
+  } catch (e) {
+    return null;
+  }
+}
+
+function buildShareUrl() {
+  const base = (location.origin && location.origin !== 'null')
+    ? location.origin + location.pathname
+    : location.pathname;
+  return base + '#m=' + encodeState();
+}
+
+// If the page was opened with a #m= link, load that mixtape
+// directly into the finished "share" view instead of the landing page.
+function loadFromShareLink() {
+  const match = location.hash.match(/m=([^&]+)/);
+  if (!match) return false;
+
+  const data = decodeState(match[1]);
+  if (!data) return false;
+
+  state.cassetteColor    = data.c  || state.cassetteColor;
+  state.cassetteAccent   = data.a  || state.cassetteAccent;
+  state.selectedStickers = data.st || state.selectedStickers;
+  state.note             = data.n  || '';
+  state.songs = (data.sg || []).map(idx => {
+    const track = SONG_LIBRARY[idx];
+    if (!track) return null;
+    return { name: track.name, artist: track.artist, url: 'songs/' + track.file, libraryIdx: idx };
+  }).filter(Boolean);
+
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page5').classList.add('active');
+
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.classList.remove('active');
+    dot.classList.add('done');
+  }
+
+  document.getElementById('shareNoteText').textContent = state.note || '♪ Aquí tienes tu mixtape ♪';
+  const linkInput = document.getElementById('shareLink');
+  if (linkInput) linkInput.value = buildShareUrl();
+
+  syncStickerSlots();
+  syncSongLines();
+  refreshShareCassette();
+  buildPlaylist();
+  return true;
+}
+
+// ═══════════════════════════════════════════════
+// SONG LIBRARY — real files stored in /songs
+// ═══════════════════════════════════════════════
+// Edita esta lista: "file" debe ser el nombre EXACTO
+// del archivo que pusiste dentro de la carpeta /songs.
+// Como son archivos reales (no subidas temporales),
+// funcionan igual para ti y para quien reciba la carpeta.
+const SONG_LIBRARY = [
+  { name: 'Acá Entre Nos',   artist: 'Artista',  file: 'AcaEntreNos.mp3' },
+  { name: 'Esta Cobardía',   artist: 'Artista',  file: 'EstaCobardia.mp3' },
+  { name: 'Frailejón',       artist: 'Artista',  file: 'Frailejon.mp3' },
+  { name: 'Perfect',         artist: 'Artista',  file: 'Perfect.mp3' },
+  { name: 'Quién Fuera',     artist: 'Artista',  file: 'QuienFuera.mp3' },
+  { name: 'Shallow',         artist: 'Artista',  file: 'Shallow.mp3' },
+  { name: 'Siempre Seré',    artist: 'Artista',  file: 'SiempreSere.mp3' },
+  { name: 'Tengo Ganas',     artist: 'Artista',  file: 'TengoGanas.mp3' },
+  // Agrega más líneas aquí siguiendo el mismo formato ↑
+];
+
 
 // ═══════════════════════════════════════════════
 // NAVIGATION
@@ -57,8 +151,11 @@ function goStep(n) {
   syncStickerSlots();
   syncSongLines();
 
-  // Step 3: update the animated cassette colour + stickers
-  if (n === 3) refreshStep3Cassette();
+  // Step 3: update the animated cassette colour + stickers, and build the library
+  if (n === 3) {
+    refreshStep3Cassette();
+    buildSongLibrary();
+  }
 }
 
 function finish() {
@@ -78,6 +175,11 @@ function finish() {
   syncSongLines();
   refreshShareCassette();
   buildPlaylist();
+
+  // Generate the real, self-contained share link
+  const linkInput = document.getElementById('shareLink');
+  if (linkInput) linkInput.value = buildShareUrl();
+  history.replaceState(null, '', '#m=' + encodeState());
 }
 
 
@@ -210,61 +312,56 @@ function renderStickersInGroup(containerId) {
 
 
 // ═══════════════════════════════════════════════
-// STEP 3 — FILE UPLOAD
+// STEP 3 — SONG LIBRARY (real files under /songs, no uploads)
 // ═══════════════════════════════════════════════
-function initDropZone() {
-  const dropArea = document.getElementById('dropArea');
-  if (!dropArea) return;
-  dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('dragover'); });
-  dropArea.addEventListener('dragleave', () => dropArea.classList.remove('dragover'));
-  dropArea.addEventListener('drop', e => {
-    e.preventDefault();
-    dropArea.classList.remove('dragover');
-    handleFiles(e.dataTransfer.files);
-  });
-}
 
-function handleFiles(files) {
-  if (!files) return;
-  Array.from(files).forEach(file => {
-    if (!file.type.startsWith('audio/')) return;
-    if (state.songs.length >= MAX_SONGS) { showToast('Máximo 8 canciones'); return; }
-
-    const url = URL.createObjectURL(file);
-    let name   = file.name.replace(/\.[^/.]+$/, '');
-    let artist = 'Archivo local';
-    const match = name.match(/^(.+?)\s*[-–]\s*(.+)$/);
-    if (match) { artist = match[1].trim(); name = match[2].trim(); }
-
-    state.songs.push({ name, artist, url, file });
-    renderSongList();
-  });
-  syncSongLines();
-  updateCounter();
-}
-
-function renderSongList() {
-  const list = document.getElementById('songList');
+// Render the full library; tapping a card adds/removes it from state.songs
+function buildSongLibrary() {
+  const list = document.getElementById('songLibrary');
   if (!list) return;
   list.innerHTML = '';
-  state.songs.forEach((s, i) => {
+
+  if (!SONG_LIBRARY.length) {
+    list.innerHTML = `<div class="song-library-empty">
+      Aún no hay canciones en la carpeta /songs.<br>
+      Agrega archivos ahí y súmalos a SONG_LIBRARY en app.js.
+    </div>`;
+    return;
+  }
+
+  SONG_LIBRARY.forEach((track, idx) => {
+    const isSelected = state.songs.some(s => s.libraryIdx === idx);
     const div = document.createElement('div');
-    div.className = 'song-item';
+    div.className = 'song-item' + (isSelected ? ' selected' : '');
     div.innerHTML = `
       <div class="song-thumb">🎵</div>
       <div class="song-info">
-        <div class="song-name">${s.name}</div>
-        <div class="song-artist">${s.artist}</div>
+        <div class="song-name">${track.name}</div>
+        <div class="song-artist">${track.artist}</div>
       </div>
-      <button class="song-remove" onclick="removeSong(${i})">✕</button>`;
+      <div class="song-check">${isSelected ? '✓' : ''}</div>`;
+    div.onclick = () => toggleLibrarySong(idx);
     list.appendChild(div);
   });
 }
 
-function removeSong(i) {
-  URL.revokeObjectURL(state.songs[i].url);
-  state.songs.splice(i, 1);
-  renderSongList();
+function toggleLibrarySong(idx) {
+  const existing = state.songs.findIndex(s => s.libraryIdx === idx);
+
+  if (existing !== -1) {
+    state.songs.splice(existing, 1);
+  } else {
+    if (state.songs.length >= MAX_SONGS) { showToast('Máximo 8 canciones'); return; }
+    const track = SONG_LIBRARY[idx];
+    state.songs.push({
+      name: track.name,
+      artist: track.artist,
+      url: 'songs/' + track.file,   // real relative path, not a blob
+      libraryIdx: idx
+    });
+  }
+
+  buildSongLibrary();
   syncSongLines();
   updateCounter();
 }
@@ -440,7 +537,8 @@ audio.addEventListener('ended', nextTrack);
 // UTILS
 // ═══════════════════════════════════════════════
 function copyLink() {
-  navigator.clipboard.writeText('Mixtape creado con Mixtape for you ♪')
+  const input = document.getElementById('shareLink');
+  navigator.clipboard.writeText(input ? input.value : '')
     .then(()  => showToast('¡Copiado!'))
     .catch(()  => showToast('No se pudo copiar'));
 }
@@ -452,5 +550,6 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// Init drop zone after DOM ready
-document.addEventListener('DOMContentLoaded', initDropZone);
+// If this page was opened via a shared mixtape link (#m=...),
+// skip the landing page and jump straight to the finished view.
+document.addEventListener('DOMContentLoaded', loadFromShareLink);
