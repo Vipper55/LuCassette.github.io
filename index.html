@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mixtape for you</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     HEADER
+     ═══════════════════════════════════ -->
+<header>
+  <div class="logo">
+    <span class="logo-main">Mixtape</span>
+    <span class="logo-sub">for you</span>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════
+     LANDING
+     ═══════════════════════════════════ -->
+<div id="landing">
+  <div class="landing-hero">
+    <!-- Notecard -->
+    <div class="hero-note">
+      <div class="hero-note-dots">
+        <div class="hero-note-dot"></div>
+        <div class="hero-note-dot"></div>
+        <div class="hero-note-dot"></div>
+      </div>
+      <div class="hero-note-text">I made this for you!<br>Enjoy creating &lt;3</div>
+    </div>
+
+    <!-- Cassette illustration -->
+    <svg class="hero-cassette" width="180" height="130" viewBox="0 0 180 130">
+      <rect x="5" y="5" width="170" height="120" rx="10" fill="#f0ede4" stroke="#ddd" stroke-width="1.5"/>
+      <rect x="30" y="30" width="120" height="55" rx="6" fill="#222"/>
+      <circle cx="65"  cy="58" r="20" fill="#555" stroke="#888" stroke-width="2"/>
+      <circle cx="65"  cy="58" r="10" fill="#333"/>
+      <circle cx="65"  cy="58" r="5"  fill="#666"/>
+      <circle cx="115" cy="58" r="20" fill="#555" stroke="#888" stroke-width="2"/>
+      <circle cx="115" cy="58" r="10" fill="#333"/>
+      <circle cx="115" cy="58" r="5"  fill="#666"/>
+      <rect x="75" y="52" width="30" height="12" rx="2" fill="#444"/>
+      <text x="12"  y="26" font-size="12" opacity="0.6">🍀</text>
+      <text x="148" y="26" font-size="10" opacity="0.5">🍀</text>
+      <text x="15"  y="80" font-size="8"  opacity="0.4">✿</text>
+      <text x="155" y="75" font-size="9"  opacity="0.4">🍀</text>
+      <circle cx="45"  cy="105" r="5" fill="#aecfd8" stroke="#bbb" stroke-width="1"/>
+      <circle cx="60"  cy="108" r="4" fill="#aecfd8" stroke="#bbb" stroke-width="1"/>
+      <circle cx="120" cy="108" r="4" fill="#aecfd8" stroke="#bbb" stroke-width="1"/>
+      <circle cx="135" cy="105" r="5" fill="#aecfd8" stroke="#bbb" stroke-width="1"/>
+    </svg>
+
+    <!-- Mini case -->
+    <div class="hero-case">
+      <div style="background:#f5f0e8;border-radius:4px;padding:8px;font-size:1.1rem;text-align:center">🌿🌸🎀</div>
+      <div style="font-size:0.4rem;color:#aaa;font-family:'Space Mono',monospace;margin-top:4px">A SIDE · B SIDE</div>
+    </div>
+  </div>
+
+  <button class="btn-create" onclick="showApp()">Create a mixtape</button>
+</div>
+
+
+<!-- ═══════════════════════════════════
+     APP (4 steps + share)
+     ═══════════════════════════════════ -->
+<main id="app" style="display:none">
+
+  <!-- Step indicators -->
+  <div class="steps" id="stepDots">
+    <div class="step-dot active" id="dot1"><span>1</span></div>
+    <div class="step-dot"        id="dot2"><span>2</span></div>
+    <div class="step-dot"        id="dot3"><span>3</span></div>
+    <div class="step-dot"        id="dot4"><span>4</span></div>
+  </div>
+
+
+  <!-- ─────────────────────────────────
+       PAGE 1 — PICK CASSETTE COLOR
+       ───────────────────────────────── -->
+  <div class="page active" id="page1">
+    <div class="step-title">PICK CASSETTE COLOR</div>
+
+    <div class="cassette-wrap">
+      <svg class="cassette-svg" id="cassetteSvg" viewBox="0 0 340 230">
+        <rect id="cassetteBody" x="10" y="10" width="320" height="210" rx="16" fill="#f0ede4" stroke="#ddd" stroke-width="1.5"/>
+        <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="10" r="0.7" fill="#ccc" opacity="0.5"/>
+        </pattern>
+        <rect x="10" y="10" width="320" height="210" rx="16" fill="url(#dots)"/>
+        <rect x="60" y="55" width="220" height="100" rx="12" fill="#1a1a1a"/>
+        <circle cx="120" cy="105" r="36" fill="#444" stroke="#777" stroke-width="2.5"/>
+        <circle cx="120" cy="105" r="20" fill="#2a2a2a"/>
+        <circle cx="120" cy="105" r="10" fill="#555"/>
+        <circle cx="120" cy="105" r="4"  fill="#888"/>
+        <circle cx="220" cy="105" r="36" fill="#444" stroke="#777" stroke-width="2.5"/>
+        <circle cx="220" cy="105" r="20" fill="#2a2a2a"/>
+        <circle cx="220" cy="105" r="10" fill="#555"/>
+        <circle cx="220" cy="105" r="4"  fill="#888"/>
+        <rect x="140" y="90" width="60" height="30" rx="4" fill="#333"/>
+        <rect x="155" y="96" width="10" height="18" rx="2" fill="#1a70b0" opacity="0.7"/>
+        <rect x="175" y="96" width="10" height="18" rx="2" fill="#555"/>
+        <text x="22"  y="46" font-size="18">🍀</text>
+        <text x="290" y="42" font-size="16">🍀</text>
+        <text x="22"  y="155" font-size="14">✿</text>
+        <text x="295" y="152" font-size="16">🍀</text>
+        <text x="140" y="48" font-size="14">🍀</text>
+        <circle cx="75"  cy="195" r="8" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="btmCirc1"/>
+        <circle cx="100" cy="200" r="7" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="btmCirc2"/>
+        <circle cx="240" cy="200" r="7" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="btmCirc3"/>
+        <circle cx="265" cy="195" r="8" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="btmCirc4"/>
+      </svg>
+    </div>
+
+    <div class="color-swatches">
+      <div class="swatch selected"
+           style="background:radial-gradient(circle at 35% 35%,#fff,#e8e4d8)"
+           data-color="#f0ede4" data-accent="#aecfd8" onclick="selectColor(this)"></div>
+      <div class="swatch"
+           style="background:radial-gradient(circle at 35% 35%,#fffacc,#e8d870)"
+           data-color="#f5f0c0" data-accent="#d4c840" onclick="selectColor(this)"></div>
+      <div class="swatch"
+           style="background:radial-gradient(circle at 35% 35%,#ffd8d8,#e89090)"
+           data-color="#f5d0d0" data-accent="#e89090" onclick="selectColor(this)"></div>
+      <div class="swatch"
+           style="background:radial-gradient(circle at 35% 35%,#d8dcf0,#9098d0)"
+           data-color="#d0d4f0" data-accent="#9098d0" onclick="selectColor(this)"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-back" onclick="showLanding()">Back</button>
+      <button class="btn btn-next" onclick="goStep(2)">Next</button>
+    </div>
+  </div>
+
+
+  <!-- ─────────────────────────────────
+       PAGE 2 — ADD STICKERS
+       ───────────────────────────────── -->
+  <div class="page" id="page2">
+    <div class="step-title">ADD STICKERS</div>
+
+    <div class="case-preview">
+      <div class="case-top">
+        <div class="sticker-slot" id="slot0">　</div>
+        <div class="sticker-slot" id="slot1">　</div>
+        <div class="sticker-slot" id="slot2">　</div>
+      </div>
+      <div class="case-bottom">
+        <div class="case-meta">
+          <span>A DATE/TIME NOISE REDUCTION □ON □OFF</span>
+          <span>B DATE/TIME NOISE REDUCTION □ON □OFF</span>
+        </div>
+        <div class="case-lines">
+          <div class="case-line"></div>
+          <div class="case-line"></div>
+          <div class="case-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sticker-panel">
+      <div class="sticker-hint">TAP A STICKER TO ADD IT</div>
+      <div class="sticker-grid" id="stickerGrid"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-back" onclick="goStep(1)">Back</button>
+      <button class="btn btn-next" onclick="goStep(3)">Next</button>
+    </div>
+  </div>
+
+
+  <!-- ─────────────────────────────────
+       PAGE 3 — ADD YOUR SONGS
+       (Two-column: animated cassette | upload + list)
+       ───────────────────────────────── -->
+  <div class="page" id="page3">
+    <div class="step-title">ADD YOUR SONGS</div>
+
+    <div class="songs-layout">
+
+      <!-- LEFT: animated cassette + mini case -->
+      <div class="songs-cassette-col">
+
+        <!-- ANIMATED CASSETTE (reflects chosen colour & stickers) -->
+        <div class="cassette-anim-wrap" id="animCassetteWrap">
+          <svg class="cassette-svg" viewBox="0 0 340 230" xmlns="http://www.w3.org/2000/svg">
+            <!-- Body -->
+            <rect id="s3CassetteBody" x="10" y="10" width="320" height="210" rx="16" fill="#f0ede4" stroke="#ddd" stroke-width="1.5"/>
+            <pattern id="dots3" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="10" cy="10" r="0.7" fill="#ccc" opacity="0.5"/>
+            </pattern>
+            <rect x="10" y="10" width="320" height="210" rx="16" fill="url(#dots3)"/>
+
+            <!-- Tape window -->
+            <rect x="60" y="55" width="220" height="100" rx="12" fill="#1a1a1a"/>
+
+            <!-- Reel left -->
+            <g id="reel1">
+              <circle cx="120" cy="105" r="36" fill="#444" stroke="#777" stroke-width="2.5"/>
+              <circle cx="120" cy="105" r="20" fill="#2a2a2a"/>
+              <!-- spokes -->
+              <line x1="120" y1="85"  x2="120" y2="70"  stroke="#666" stroke-width="2.5"/>
+              <line x1="120" y1="125" x2="120" y2="140" stroke="#666" stroke-width="2.5"/>
+              <line x1="100" y1="105" x2="85"  y2="105" stroke="#666" stroke-width="2.5"/>
+              <line x1="140" y1="105" x2="155" y2="105" stroke="#666" stroke-width="2.5"/>
+              <circle cx="120" cy="105" r="7" fill="#666"/>
+            </g>
+
+            <!-- Reel right -->
+            <g id="reel2">
+              <circle cx="220" cy="105" r="36" fill="#444" stroke="#777" stroke-width="2.5"/>
+              <circle cx="220" cy="105" r="20" fill="#2a2a2a"/>
+              <line x1="220" y1="85"  x2="220" y2="70"  stroke="#666" stroke-width="2.5"/>
+              <line x1="220" y1="125" x2="220" y2="140" stroke="#666" stroke-width="2.5"/>
+              <line x1="200" y1="105" x2="185" y2="105" stroke="#666" stroke-width="2.5"/>
+              <line x1="240" y1="105" x2="255" y2="105" stroke="#666" stroke-width="2.5"/>
+              <circle cx="220" cy="105" r="7" fill="#666"/>
+            </g>
+
+            <!-- Tape bridge -->
+            <rect x="140" y="90" width="60" height="30" rx="4" fill="#333"/>
+            <rect x="155" y="96" width="10" height="18" rx="2" fill="#1a70b0" opacity="0.7"/>
+            <rect x="175" y="96" width="10" height="18" rx="2" fill="#555"/>
+
+            <!-- Bottom circles (colour-matched) -->
+            <circle cx="75"  cy="195" r="8" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="s3Circ1"/>
+            <circle cx="100" cy="200" r="7" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="s3Circ2"/>
+            <circle cx="240" cy="200" r="7" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="s3Circ3"/>
+            <circle cx="265" cy="195" r="8" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="s3Circ4"/>
+
+            <!-- Dynamic sticker group (filled by JS) -->
+            <g id="s3StickerGroup"></g>
+          </svg>
+        </div>
+
+        <!-- Mini case below cassette showing stickers + songs -->
+        <div class="songs-case-mini">
+          <div class="case-top">
+            <div class="sticker-slot" id="pslot0">　</div>
+            <div class="sticker-slot" id="pslot1">　</div>
+            <div class="sticker-slot" id="pslot2">　</div>
+          </div>
+          <div class="case-bottom">
+            <div class="case-meta">
+              <span>A DATE/TIME NOISE REDUCTION □ON □OFF</span>
+              <span>B DATE/TIME NOISE REDUCTION □ON □OFF</span>
+            </div>
+            <div class="case-lines" id="songLines3">
+              <div class="case-line"></div>
+              <div class="case-line"></div>
+              <div class="case-line"></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /songs-cassette-col -->
+
+
+      <!-- RIGHT: upload + list -->
+      <div class="songs-controls-col">
+
+        <div class="search-box">
+          <div class="drop-area" id="dropArea" onclick="document.getElementById('fileInput').click()">
+            <div class="drop-icon">🎵</div>
+            <div>Haz clic o arrastra archivos aquí</div>
+            <div style="margin-top:4px;font-size:0.62rem;color:#bbb">MP3 · WAV · FLAC · OGG · M4A</div>
+          </div>
+          <input type="file" id="fileInput" accept="audio/*" multiple
+                 onchange="handleFiles(this.files)">
+          <div class="songs-counter" id="songsCounter">0 / 8 canciones</div>
+        </div>
+
+        <div class="song-list" id="songList"></div>
+
+      </div><!-- /songs-controls-col -->
+
+    </div><!-- /songs-layout -->
+
+    <div class="btn-row" style="max-width:720px">
+      <button class="btn btn-back" onclick="goStep(2)">Back</button>
+      <button class="btn btn-next" onclick="goStep(4)">Next</button>
+    </div>
+  </div>
+
+
+  <!-- ─────────────────────────────────
+       PAGE 4 — ADD A LITTLE NOTE
+       ───────────────────────────────── -->
+  <div class="page" id="page4">
+    <div class="step-title">ADD A LITTLE NOTE</div>
+
+    <div class="case-preview">
+      <div class="case-top">
+        <div class="sticker-slot" id="nslot0">　</div>
+        <div class="sticker-slot" id="nslot1">　</div>
+        <div class="sticker-slot" id="nslot2">　</div>
+      </div>
+      <div class="case-bottom">
+        <div class="case-meta">
+          <span>A DATE/TIME NOISE REDUCTION □ON □OFF</span>
+          <span>B DATE/TIME NOISE REDUCTION □ON □OFF</span>
+        </div>
+        <div class="case-lines" id="songLines4">
+          <div class="case-line"></div>
+          <div class="case-line"></div>
+          <div class="case-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-card">
+      <div class="note-dots">
+        <div class="note-dot"></div>
+        <div class="note-dot"></div>
+        <div class="note-dot"></div>
+        <div class="note-dot"></div>
+        <div class="note-dot"></div>
+        <div class="note-dot"></div>
+      </div>
+      <textarea class="note-textarea" id="noteText"
+                placeholder="Escribe tu mensaje aquí..."
+                maxlength="280"
+                oninput="updateNoteCounter()"></textarea>
+      <div class="note-counter"><span id="noteCount">0</span>/280</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-back" onclick="goStep(3)">Back</button>
+      <button class="btn btn-next" onclick="finish()">Finish</button>
+    </div>
+  </div>
+
+
+  <!-- ─────────────────────────────────
+       PAGE 5 — SHARE YOUR MIXTAPE
+       (cassette animado siempre visible junto al reproductor)
+       ───────────────────────────────── -->
+  <div class="page" id="page5">
+    <div class="step-title">SHARE YOUR MIXTAPE</div>
+
+    <!-- Note -->
+    <div class="share-note">
+      <div class="share-note-dots">
+        <div class="share-note-dot"></div>
+        <div class="share-note-dot"></div>
+        <div class="share-note-dot"></div>
+        <div class="share-note-dot"></div>
+      </div>
+      <div class="share-note-text" id="shareNoteText">Tu mensaje aquí</div>
+    </div>
+
+    <!-- Cassette (animado, siempre visible) + Case/Player -->
+    <div class="share-layout">
+
+      <!-- LEFT: cassette animado -->
+      <div class="share-cassette-col">
+        <div class="cassette-anim-wrap" id="shareCassetteWrap">
+          <svg class="cassette-svg" viewBox="0 0 340 230" xmlns="http://www.w3.org/2000/svg">
+            <rect id="s5CassetteBody" x="10" y="10" width="320" height="210" rx="16" fill="#f0ede4" stroke="#ddd" stroke-width="1.5"/>
+            <pattern id="dots5" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="10" cy="10" r="0.7" fill="#ccc" opacity="0.5"/>
+            </pattern>
+            <rect x="10" y="10" width="320" height="210" rx="16" fill="url(#dots5)"/>
+
+            <rect x="60" y="55" width="220" height="100" rx="12" fill="#1a1a1a"/>
+
+            <g id="s5reel1">
+              <circle cx="120" cy="105" r="36" fill="#444" stroke="#777" stroke-width="2.5"/>
+              <circle cx="120" cy="105" r="20" fill="#2a2a2a"/>
+              <line x1="120" y1="85"  x2="120" y2="70"  stroke="#666" stroke-width="2.5"/>
+              <line x1="120" y1="125" x2="120" y2="140" stroke="#666" stroke-width="2.5"/>
+              <line x1="100" y1="105" x2="85"  y2="105" stroke="#666" stroke-width="2.5"/>
+              <line x1="140" y1="105" x2="155" y2="105" stroke="#666" stroke-width="2.5"/>
+              <circle cx="120" cy="105" r="7" fill="#666"/>
+            </g>
+
+            <g id="s5reel2">
+              <circle cx="220" cy="105" r="36" fill="#444" stroke="#777" stroke-width="2.5"/>
+              <circle cx="220" cy="105" r="20" fill="#2a2a2a"/>
+              <line x1="220" y1="85"  x2="220" y2="70"  stroke="#666" stroke-width="2.5"/>
+              <line x1="220" y1="125" x2="220" y2="140" stroke="#666" stroke-width="2.5"/>
+              <line x1="200" y1="105" x2="185" y2="105" stroke="#666" stroke-width="2.5"/>
+              <line x1="240" y1="105" x2="255" y2="105" stroke="#666" stroke-width="2.5"/>
+              <circle cx="220" cy="105" r="7" fill="#666"/>
+            </g>
+
+            <rect x="140" y="90" width="60" height="30" rx="4" fill="#333"/>
+            <rect x="155" y="96" width="10" height="18" rx="2" fill="#1a70b0" opacity="0.7"/>
+            <rect x="175" y="96" width="10" height="18" rx="2" fill="#555"/>
+
+            <circle cx="75"  cy="195" r="8" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="s5Circ1"/>
+            <circle cx="100" cy="200" r="7" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="s5Circ2"/>
+            <circle cx="240" cy="200" r="7" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="s5Circ3"/>
+            <circle cx="265" cy="195" r="8" fill="#aecfd8" stroke="#bbb" stroke-width="1.5" id="s5Circ4"/>
+
+            <g id="s5StickerGroup"></g>
+          </svg>
+        </div>
+        <div class="share-now-playing" id="shareNowPlaying">♪ Toca play para escuchar ♪</div>
+      </div>
+
+      <!-- RIGHT: case + player apilados -->
+      <div class="share-player-col">
+        <div class="share-case">
+          <div class="case-top">
+            <div class="sticker-slot" id="sslot0">　</div>
+            <div class="sticker-slot" id="sslot1">　</div>
+            <div class="sticker-slot" id="sslot2">　</div>
+          </div>
+          <div class="case-bottom">
+            <div class="case-meta">
+              <span>A DATE/TIME NOISE REDUCTION □ON □OFF</span>
+              <span>B DATE/TIME NOISE REDUCTION □ON □OFF</span>
+            </div>
+            <div class="case-lines" id="songLinesShare">
+              <div class="case-line"></div>
+              <div class="case-line"></div>
+              <div class="case-line"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audio player -->
+        <div class="player-card">
+          <div class="player-header">
+            <div class="player-art" id="playerArt">🎵</div>
+            <div class="player-info">
+              <div class="player-title"  id="playerTitle">Sin canciones</div>
+              <div class="player-artist" id="playerArtist">—</div>
+            </div>
+          </div>
+          <div class="player-controls">
+            <div class="progress-bar" id="progressBar" onclick="seekAudio(event)">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="time-row">
+              <span id="curTime">0:00</span>
+              <span id="durTime">0:00</span>
+            </div>
+            <div class="ctrl-row">
+              <button class="ctrl-btn" onclick="prevTrack()" title="Anterior">⏮</button>
+              <button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+              <button class="ctrl-btn" onclick="nextTrack()" title="Siguiente">⏭</button>
+            </div>
+          </div>
+          <div class="playlist" id="playlist"></div>
+        </div>
+      </div>
+
+    </div><!-- /share-layout -->
+
+    <!-- Share link -->
+    <div class="share-link-block">
+      <div class="share-label">Comparte este mixtape:</div>
+      <div class="share-row">
+        <input class="share-input" id="shareLink" readonly
+               value="¡Abre este archivo en tu navegador para escuchar!">
+        <button class="copy-btn" onclick="copyLink()">📋 Copiar</button>
+      </div>
+    </div>
+
+    <div class="btn-row" style="max-width:720px">
+      <button class="btn btn-back" style="flex:none;padding:14px 22px" onclick="goStep(4)">← Volver</button>
+      <button class="btn btn-next" style="flex:none;padding:14px 22px" onclick="showLanding()">Nueva</button>
+    </div>
+  </div>
+
+</main><!-- /app -->
+
+
+<footer>Diseñado con ♥ — Mixtape for you</footer>
+<div class="toast" id="toast"></div>
+<audio id="audioEl"></audio>
+
+<script src="app.js"></script>
+</body>
+</html>
