@@ -263,21 +263,14 @@
       </div><!-- /songs-cassette-col -->
 
 
-      <!-- RIGHT: upload + list -->
+      <!-- RIGHT: song library (pre-loaded, real files) -->
       <div class="songs-controls-col">
 
         <div class="search-box">
-          <div class="drop-area" id="dropArea" onclick="document.getElementById('fileInput').click()">
-            <div class="drop-icon">🎵</div>
-            <div>Haz clic o arrastra archivos aquí</div>
-            <div style="margin-top:4px;font-size:0.62rem;color:#bbb">MP3 · WAV · FLAC · OGG · M4A</div>
-          </div>
-          <input type="file" id="fileInput" accept="audio/*" multiple
-                 onchange="handleFiles(this.files)">
+          <div class="sticker-hint" style="margin-bottom:10px">TOCA PARA AÑADIR A TU MIXTAPE</div>
+          <div class="song-library" id="songLibrary"></div>
           <div class="songs-counter" id="songsCounter">0 / 8 canciones</div>
         </div>
-
-        <div class="song-list" id="songList"></div>
 
       </div><!-- /songs-controls-col -->
 
@@ -458,10 +451,9 @@
 
     <!-- Share link -->
     <div class="share-link-block">
-      <div class="share-label">Comparte este mixtape:</div>
+      <div class="share-label">Link de tu mixtape:</div>
       <div class="share-row">
-        <input class="share-input" id="shareLink" readonly
-               value="¡Abre este archivo en tu navegador para escuchar!">
+        <input class="share-input" id="shareLink" readonly value="">
         <button class="copy-btn" onclick="copyLink()">📋 Copiar</button>
       </div>
     </div>
